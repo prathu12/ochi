@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import NavBar from './components/NavBar';
 import LandingPage from './components/LandingPage';
 import Marquee from './components/Marquee';
@@ -9,15 +9,24 @@ import Featured1 from './components/Featured1';
 import Cards from './components/Cards';
 import Footer from './components/Footer';
 import LocomotiveScroll from 'locomotive-scroll';
-function App() {
 
-  const locomotiveScroll = new LocomotiveScroll();
+function App() {
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const locomotiveScroll = new LocomotiveScroll({
+      el: scrollRef.current,
+      // Add your options here
+    });
+
+    return () => {
+      locomotiveScroll.destroy();
+    };
+  }, []);
 
   return (
-    <div className="w-screen min-h-screen text-white bg-zinc-900">
-      {/* <BrowserRouter> */}
+    <div className="w-screen min-h-screen text-white bg-zinc-900" ref={scrollRef}>
       <NavBar />
-      {/* <Routes> */}
       <LandingPage />
       <Marquee />
       <About />
@@ -26,8 +35,6 @@ function App() {
       <Featured1 />
       <Cards />
       <Footer />
-      {/* </Routes>
-      </BrowserRouter> */}
     </div>
   );
 }
